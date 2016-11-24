@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TranfficLight.cs" />
     <EmbeddedResource Include="FormView.resx">
       <DependentUpon>FormView.cs</DependentUpon>
     </EmbeddedResource>
