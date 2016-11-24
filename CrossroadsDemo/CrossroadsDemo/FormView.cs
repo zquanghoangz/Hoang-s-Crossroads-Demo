@@ -97,8 +97,29 @@ namespace CrossroadsDemo
                 isHozontal: true,
                 onNumber: _tranficLights[0]);
 
-            //TODO: draw 3 other tranfic lights
+            DrawTranficLight(
+                g: g,
+                startX: Start.X + AreaSize / 2 + AreaSize / 48,
+                startY: Start.Y + 2 * AreaSize / 3,
+                size: AreaSize / 8,
+                isHozontal: true,
+                onNumber: _tranficLights[2]);
 
+            DrawTranficLight(
+               g: g,
+               startX: Start.X + AreaSize / 3 - AreaSize / 24,
+               startY: Start.Y + AreaSize / 2 + AreaSize / 48,
+               size: AreaSize / 8,
+               isHozontal: false,
+               onNumber: _tranficLights[1]);
+
+            DrawTranficLight(
+               g: g,
+               startX: Start.X + 2*AreaSize / 3,
+               startY: Start.Y + AreaSize / 3 + AreaSize / 48,
+               size: AreaSize / 8,
+               isHozontal: false,
+               onNumber: _tranficLights[3]);
         }
 
         private void DrawTranficLight(Graphics g, int startX, int startY, int size, bool isHozontal, int onNumber)
@@ -110,11 +131,11 @@ namespace CrossroadsDemo
                 incHeight = 0;
             }
 
-            g.FillRectangle(Brushes.Red, startX, startY, sizeOfLight, sizeOfLight);
-            g.FillRectangle(Brushes.Yellow, startX + incWidth, startY + incHeight, sizeOfLight, sizeOfLight);
-            g.FillRectangle(Brushes.Green, startX + 2 * incWidth, startY + 2 * incHeight, sizeOfLight, sizeOfLight);
+            g.FillEllipse(Brushes.Red, startX, startY, sizeOfLight, sizeOfLight);
+            g.FillEllipse(Brushes.Yellow, startX + incWidth, startY + incHeight, sizeOfLight, sizeOfLight);
+            g.FillEllipse(Brushes.Green, startX + 2 * incWidth, startY + 2 * incHeight, sizeOfLight, sizeOfLight);
 
-            g.DrawRectangle(new Pen(Brushes.Orange, 3), startX + onNumber * incWidth, startY + onNumber * incHeight, sizeOfLight, sizeOfLight);
+            g.DrawEllipse(new Pen(Brushes.Orange, 3), startX + onNumber * incWidth, startY + onNumber * incHeight, sizeOfLight, sizeOfLight);
         }
     }
 }
