@@ -35,6 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1063, 1057);
+            this.DoubleBuffered = true;
             this.Name = "CrossroadsForm";
             this.Text = "Crossroads Control";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

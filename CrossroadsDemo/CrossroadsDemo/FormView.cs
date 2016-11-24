@@ -15,13 +15,57 @@ namespace CrossroadsDemo
         /* This code fixed size panel is 600 pixel square
          */
         private const int AreaSize = 600;
+        private const int RedLightTime = 10;
+        private const int GreenLightTime = 8;
+
         public Point Start { get; set; }
+        public int[] _tranficLights;
+        private int _count;
 
         public CrossroadsForm()
         {
             InitializeComponent();
 
             Start = new Point(30, 30);
+            _tranficLights = new int[4];
+            _tranficLights[0] = _tranficLights[2] = 0; //Red
+            _tranficLights[1] = _tranficLights[3] = 2; //Green
+
+            //Timer to change tranfic light
+            Timer tranficLightTimer = new Timer { Interval = 1000 }; //1s
+            tranficLightTimer.Tick += TranficLightTimerTick;
+            _count = 0;
+            tranficLightTimer.Start();
+        }
+
+        private void TranficLightTimerTick(object sender, EventArgs e)
+        {
+            _count++;
+            if (_count == RedLightTime)
+            {
+                //Red to green, Green to red
+                _tranficLights[0] = _tranficLights[2] = _tranficLights[0] == 0 ? 2 : 0;
+                _tranficLights[1] = _tranficLights[3] = _tranficLights[1] == 0 ? 2 : 0;
+                //Reset count
+                _count = 0;
+
+                //Re-draw form
+                Invalidate();
+            }
+            else if (_count == GreenLightTime)
+            {
+                //Green to yellow
+                if (_tranficLights[0] == 2)
+                {
+                    _tranficLights[0] = _tranficLights[2] = 1;
+                }
+                if (_tranficLights[1] == 2)
+                {
+                    _tranficLights[1] = _tranficLights[3] = 1;
+                }
+
+                Invalidate();
+            }
         }
 
         private void CrossroadsForm_Paint(object sender, PaintEventArgs e)
@@ -51,7 +95,7 @@ namespace CrossroadsDemo
                 startY: Start.Y + AreaSize / 3 - AreaSize / 24,
                 size: AreaSize / 8,
                 isHozontal: true,
-                onNumber: 0);
+                onNumber: _tranficLights[0]);
 
             //TODO: draw 3 other tranfic lights
 
@@ -59,25 +103,18 @@ namespace CrossroadsDemo
 
         private void DrawTranficLight(Graphics g, int startX, int startY, int size, bool isHozontal, int onNumber)
         {
-
+            int incWidth = 0, incHeight = size / 3, sizeOfLight = size / 3;
             if (isHozontal)
             {
-                int width = size, heigh = size / 3;
-
-                g.DrawRectangle(new Pen(Brushes.Black), startX, startY, width, heigh);
-
-                g.FillRectangle(Brushes.Red, startX, startY, heigh, heigh);
-                g.FillRectangle(Brushes.Yellow, startX + heigh, startY, heigh, heigh);
-                g.FillRectangle(Brushes.Green, startX + 2 * heigh, startY, heigh, heigh);
-
-                g.DrawRectangle(new Pen(Brushes.Orange, 3), startX + onNumber * Height, startY, heigh, heigh);
-            }
-            else
-            {
-                int width = size / 3, heigh = size;
-                //TODO: vertical tranfix light
+                incWidth = size / 3;
+                incHeight = 0;
             }
 
+            g.FillRectangle(Brushes.Red, startX, startY, sizeOfLight, sizeOfLight);
+            g.FillRectangle(Brushes.Yellow, startX + incWidth, startY + incHeight, sizeOfLight, sizeOfLight);
+            g.FillRectangle(Brushes.Green, startX + 2 * incWidth, startY + 2 * incHeight, sizeOfLight, sizeOfLight);
+
+            g.DrawRectangle(new Pen(Brushes.Orange, 3), startX + onNumber * incWidth, startY + onNumber * incHeight, sizeOfLight, sizeOfLight);
         }
     }
 }
